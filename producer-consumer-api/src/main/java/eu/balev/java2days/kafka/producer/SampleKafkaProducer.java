@@ -5,10 +5,12 @@ import static eu.balev.java2days.kafka.Constants.TOPIC_TEMPERATURE;
 
 import eu.balev.java2days.kafka.TemperatureSensor;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.DoubleSerializer;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,7 @@ public class SampleKafkaProducer {
     // 3. Send temperature records
     Stream<Double> temperatureRecords = Stream.generate(new TemperatureSensor()).limit(10);
 
-    temperatureRecords.forEach(d ->
+    temperatureRecords.forEach((Double d) ->
         {
 
           long currentTime = System.currentTimeMillis();
@@ -45,9 +47,19 @@ public class SampleKafkaProducer {
               currentTime,
               d);
 
-          producer.send(record);
+          try {
+            RecordMetadata producedRecord = producer.send(record).get();
+            LOGGER.info("Sent {} degrees. P/O {}/{}", d,
+                producedRecord.partition(),
+                producedRecord.offset());
+          } catch (InterruptedException e) {
+            Thread.interrupted();
+            LOGGER.error("I won't cooperate!");
+          } catch (ExecutionException e) {
+            LOGGER.error(e.getMessage(), e);
+          }
 
-          LOGGER.info("Sent {} degrees at {}.", d, currentTime);
+
 
           try {
             Thread.sleep(100);

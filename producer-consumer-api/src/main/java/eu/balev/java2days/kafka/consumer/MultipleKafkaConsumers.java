@@ -35,11 +35,11 @@ public class MultipleKafkaConsumers {
 
     Thread t1 = new Thread(new ConsumerLoop(config,1));
     Thread t2 = new Thread(new ConsumerLoop(config,2));
-    Thread t3 = new Thread(new ConsumerLoop(config,3));
+    //t3 = new Thread(new ConsumerLoop(config,3));
 
     t1.start();
     t2.start();
-    t3.start();
+    //t3.start();
   }
 
 }
@@ -69,7 +69,7 @@ class ConsumerLoop implements Runnable {
 
       ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
       for (ConsumerRecord<String, String> record : records) {
-        LOGGER.info("Consumer {}. Record P/O {}/{} - Key {}/Value {}",
+        LOGGER.info("Consumer/P/O {}/{}/{} - Key {}/Value {}",
             consumerID,
             record.partition(),
             record.offset(),
