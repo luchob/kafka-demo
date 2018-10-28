@@ -58,15 +58,6 @@ public class SampleKafkaProducer {
           } catch (ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
           }
-
-
-
-          try {
-            Thread.sleep(100);
-          } catch (InterruptedException e) {
-            Thread.interrupted();
-            LOGGER.error("I won't cooperate!");
-          }
         }
     );
     producer.close();

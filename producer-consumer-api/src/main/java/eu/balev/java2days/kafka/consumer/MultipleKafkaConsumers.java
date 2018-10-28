@@ -23,6 +23,17 @@ public class MultipleKafkaConsumers {
 
   public static void main(String[] args) {
 
+    Thread t1 = new Thread(new ConsumerLoop(getCommonProperties(String.valueOf(1))));
+    Thread t2 = new Thread(new ConsumerLoop(getCommonProperties(String.valueOf(2))));
+    Thread t3 = new Thread(new ConsumerLoop(getCommonProperties(String.valueOf(3))));
+
+    t1.start();
+    t2.start();
+    t3.start();
+  }
+
+  private static Properties getCommonProperties(String clientID) {
+
     Properties config = new Properties();
 
     config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
@@ -32,14 +43,9 @@ public class MultipleKafkaConsumers {
         DoubleDeserializer.class.getName());
     config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "multiple-kafka-consumer");
     config.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    config.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, "CLIENT" + clientID);
 
-    Thread t1 = new Thread(new ConsumerLoop(config,1));
-    Thread t2 = new Thread(new ConsumerLoop(config,2));
-    //t3 = new Thread(new ConsumerLoop(config,3));
-
-    t1.start();
-    t2.start();
-    //t3.start();
+    return config;
   }
 
 }
@@ -49,11 +55,11 @@ class ConsumerLoop implements Runnable {
   private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerLoop.class);
 
   private final Properties config;
-  private final int consumerID;
+  private final String clientID;
 
-  ConsumerLoop(Properties config, int consumerID) {
+  ConsumerLoop(Properties config) {
     this.config = config;
-    this.consumerID = consumerID;
+    this.clientID = config.getProperty(ConsumerConfig.CLIENT_ID_CONFIG);
   }
 
   @Override
@@ -69,8 +75,8 @@ class ConsumerLoop implements Runnable {
 
       ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
       for (ConsumerRecord<String, String> record : records) {
-        LOGGER.info("Consumer/P/O {}/{}/{} - Key {}/Value {}",
-            consumerID,
+        LOGGER.info("Consumer P/O {} {}/{} - Key {}/Value {}",
+            clientID,
             record.partition(),
             record.offset(),
             record.key(),
