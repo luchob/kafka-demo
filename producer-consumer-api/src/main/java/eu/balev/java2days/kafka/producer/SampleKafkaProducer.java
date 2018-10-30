@@ -5,6 +5,7 @@ import static eu.balev.java2days.kafka.Constants.TOPIC_TEMPERATURE;
 
 import eu.balev.java2days.kafka.TemperatureSensor;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -12,7 +13,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.DoubleSerializer;
-import org.apache.kafka.common.serialization.LongSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -29,11 +30,11 @@ public class SampleKafkaProducer {
     Properties properties = new Properties();
 
     properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
-    properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
+    properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DoubleSerializer.class.getName());
 
     // 2. Create producer
-    KafkaProducer<Long, Double> producer = new KafkaProducer<>(properties);
+    KafkaProducer<String, Double> producer = new KafkaProducer<>(properties);
 
     // 3. Send temperature records
     Stream<Double> temperatureRecords = Stream.generate(new TemperatureSensor()).limit(10);
@@ -43,13 +44,13 @@ public class SampleKafkaProducer {
 
           long currentTime = System.currentTimeMillis();
 
-          ProducerRecord<Long, Double> record = new ProducerRecord<>(TOPIC_TEMPERATURE,
-              currentTime,
+          ProducerRecord<String, Double> record = new ProducerRecord<>(TOPIC_TEMPERATURE,
+              UUID.randomUUID().toString(),
               d);
 
           try {
             RecordMetadata producedRecord = producer.send(record).get();
-            LOGGER.info("Sent {} degrees. P/O {}/{}", d,
+            LOGGER.info("{} degrees sent. PARTITION {} OFFSET {}", d,
                 producedRecord.partition(),
                 producedRecord.offset());
           } catch (InterruptedException e) {

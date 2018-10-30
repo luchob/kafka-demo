@@ -75,7 +75,7 @@ class ConsumerLoop implements Runnable {
 
       ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
       for (ConsumerRecord<String, String> record : records) {
-        LOGGER.info("Consumer P/O {} {}/{} - Key {}/Value {}",
+        LOGGER.info("Consumer {} PARTITION {} OFFSET {} - Key {}/Value {}",
             clientID,
             record.partition(),
             record.offset(),
