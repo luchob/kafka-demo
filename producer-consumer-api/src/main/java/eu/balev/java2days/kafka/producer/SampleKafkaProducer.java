@@ -41,9 +41,6 @@ public class SampleKafkaProducer {
 
     temperatureRecords.forEach((Double d) ->
         {
-
-          long currentTime = System.currentTimeMillis();
-
           ProducerRecord<String, Double> record = new ProducerRecord<>(TOPIC_TEMPERATURE,
               UUID.randomUUID().toString(),
               d);

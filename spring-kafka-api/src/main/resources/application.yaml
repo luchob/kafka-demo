@@ -1,0 +1,12 @@
+#Kafka configuration
+spring:
+  kafka:
+    listener:
+      ack-mode: manual
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: sample-kafka-spring-consumer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.DoubleDeserializer
+      enable-auto-commit: false
+      auto-offset-reset: "earliest"

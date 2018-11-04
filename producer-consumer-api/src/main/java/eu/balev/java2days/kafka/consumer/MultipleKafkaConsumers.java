@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Sets up multiple Kafka consumers. Each consumer runs into its own loop.
+ *
  * The purpose of this example is to show that if the topic has
  * multiple partitions only certain partitions are assigned to consumers in a given consumer group.
  */
