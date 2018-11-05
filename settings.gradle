@@ -1,3 +1,6 @@
 rootProject.name = 'kafka-demo'
 
-include 'producer-consumer-api', 'spring-kafka-api'
+include 'producer-consumer-api'
+include 'spring-kafka-api'
+include 'kafka-streaming-api'
+
