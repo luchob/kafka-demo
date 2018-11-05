@@ -1,4 +1,4 @@
-package eu.balev.java2days.kafka;
+package eu.balev.java2days.kafka.spring.demo.common;
 
 import java.util.Random;
 import java.util.function.Supplier;

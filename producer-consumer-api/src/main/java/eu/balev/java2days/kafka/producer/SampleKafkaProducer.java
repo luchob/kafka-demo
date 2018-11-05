@@ -1,9 +1,9 @@
 package eu.balev.java2days.kafka.producer;
 
-import static eu.balev.java2days.kafka.Constants.BROKER_LIST;
-import static eu.balev.java2days.kafka.Constants.TOPIC_TEMPERATURE;
+import static eu.balev.java2days.kafka.common.Constants.BROKER_LIST;
+import static eu.balev.java2days.kafka.common.Constants.TOPIC_TEMPERATURE;
 
-import eu.balev.java2days.kafka.TemperatureSensor;
+import eu.balev.java2days.kafka.common.TemperatureSensor;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -47,7 +47,7 @@ public class SampleKafkaProducer {
 
           try {
             RecordMetadata producedRecord = producer.send(record).get();
-            LOGGER.info("{} degrees sent. PARTITION {} OFFSET {}", d,
+            LOGGER.info("PARTITION {} OFFSET {}. {} degrees sent.", d,
                 producedRecord.partition(),
                 producedRecord.offset());
           } catch (InterruptedException e) {

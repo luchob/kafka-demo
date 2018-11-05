@@ -1,4 +1,4 @@
-package eu.balev.java2days.kafka;
+package eu.balev.java2days.kafka.common;
 
 /**
  * Some common constants used in our demos.

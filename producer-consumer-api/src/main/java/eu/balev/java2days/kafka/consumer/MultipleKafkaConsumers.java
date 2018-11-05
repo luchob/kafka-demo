@@ -1,7 +1,7 @@
 package eu.balev.java2days.kafka.consumer;
 
-import static eu.balev.java2days.kafka.Constants.BROKER_LIST;
-import static eu.balev.java2days.kafka.Constants.TOPIC_TEMPERATURE;
+import static eu.balev.java2days.kafka.common.Constants.BROKER_LIST;
+import static eu.balev.java2days.kafka.common.Constants.TOPIC_TEMPERATURE;
 
 import java.time.Duration;
 import java.util.Collections;

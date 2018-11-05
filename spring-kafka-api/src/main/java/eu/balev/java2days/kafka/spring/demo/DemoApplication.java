@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.kafka.annotation.EnableKafka;
 
-@EnableKafka
 @SpringBootApplication
 public class DemoApplication {
 
