@@ -11,7 +11,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.DoubleDeserializer;
-import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ public class MultipleKafkaConsumers {
 
     config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
     config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-        LongDeserializer.class.getName());
+        StringDeserializer.class.getName());
     config.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
         DoubleDeserializer.class.getName());
     config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "multiple-kafka-consumer");
