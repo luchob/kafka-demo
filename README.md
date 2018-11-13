@@ -20,6 +20,8 @@ Prerequisites if you want to use the project:
 + Knowledge of Kafka theory.
 + Reasonable IDE - IntelliJ is certainly recommended!
 
+The classes have decent documentation and casual browsing should be enough to grasp the ideas within.
+
 # Kafka installation
 
 If you want to install Kafka and make more deeper experiment maybe you would like a native Kafka installation.
@@ -42,6 +44,66 @@ Installing Kafka natively without some ad-hoc configurations is easy. Just follo
 quick start guide.
 
 # Common Kafka commands
+
+This is a cheat sheet with some Kafka console tools commands. Just for reference.
+Assumes a local Kafka installation with a broker at port 9092 and zookeeper at port 2181.
+
+## Create a topic
+
+Creates a topic `demo` with replication factor of 2 and 3 partitions.
+
+```
+kafka-topics.sh \
+    --create \
+    --zookeeper localhost:2181 \
+    --replication-factor 2 \
+    --partitions 3 \
+    --topic demo
+```
+
+## Produce to a topic
+
+Produce to topic `demo`.
+
+```
+kafka-console-producer.sh \
+    --topic demo \
+    --broker-list localhost:9092
+```
+
+## Consume from a topic with double values
+
+Consume from topic `temperature-fahrenheit`.
+
+```
+kafka-console-consumer.sh \
+  --bootstrap-server localhost:9092 \
+  --topic temperature-fahrenheit \
+  --value-deserializer org.apache.kafka.common.serialization.DoubleDeserializer
+```
+
+## Delete a topic
+
+Delete the topic `demo`.
+
+```
+kafka-topics.sh \
+    --delete \
+    --zookeeper localhost:2181 \
+    --topic demo
+```
+
+## Describe consumer group
+
+Describes the `multiple-kafka-consumer` group (topic, partions, lags, etc)
+
+```
+kafka-consumer-groups.sh \
+      --bootstrap-server localhost:9092 \
+      --describe \
+      --group multiple-kafka-consumer
+```
+
 
 # Contributing
 

@@ -15,7 +15,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.LoggerFactory;
 
 /**
- * The class sets up a single Kafka consumer belonging to one consumer group.
+ * The class demonstrates the creation of a Kafka consumer by using
+ * the <a href="https://kafka.apache.org/documentation.html#consumerapi">Kafka Consumer API</a>.
  */
 public class SampleKafkaConsumer {
 
@@ -25,6 +26,7 @@ public class SampleKafkaConsumer {
 
     Properties config = new Properties();
 
+    // 1. Create the important configuration
     config.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
     config.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
         StringDeserializer.class.getName());
@@ -33,15 +35,15 @@ public class SampleKafkaConsumer {
     config.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "sample-kafka-consumer");
     config.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-    // create the consumer
+    // 2. Create the consumer itself.
     KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
-    // subscribe
+    // 3. Subscribe to a topic
     consumer.subscribe(Collections.singleton(TOPIC_TEMPERATURE));
 
 
     // WARNING: It is very important to notice that this example has no clean shut down!
     while(true) {
-
+      // 4. Poll the records and write them down.
       ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
       for (ConsumerRecord<String, String> record : records) {
         LOGGER.info("Record P/O {}/{} - Key {}/Value {}",

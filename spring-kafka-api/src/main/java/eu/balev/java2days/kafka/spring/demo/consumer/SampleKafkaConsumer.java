@@ -9,7 +9,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Demonstrates the consumption of messages with a listener annotation.
+ * Demonstrates the consumption of messages with a Kafka listener annotation.
+ * This is the Spring way to listen to a Kafka topic.
  * For the complete configuration see the application.yaml.
  */
 @Component

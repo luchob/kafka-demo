@@ -17,7 +17,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.LoggerFactory;
 
 /**
- * Demonstrates how Kafka message are produced with the standard API.
+ * Demonstrates how Kafka message are produced with the standard
+ * <a href="https://kafka.apache.org/documentation.html#producerapi">Kafka Producer API</a>.
  * We will generate some messages in the temperature topic.
  */
 public class SampleKafkaProducer {
@@ -36,9 +37,10 @@ public class SampleKafkaProducer {
     // 2. Create producer
     KafkaProducer<String, Double> producer = new KafkaProducer<>(properties);
 
-    // 3. Send temperature records
+    // a fake temperature sensors :-)
     Stream<Double> temperatureRecords = Stream.generate(new TemperatureSensor()).limit(10);
 
+    // 3. Send temperature records
     temperatureRecords.forEach((Double d) ->
         {
           ProducerRecord<String, Double> record = new ProducerRecord<>(TOPIC_TEMPERATURE,
@@ -58,6 +60,7 @@ public class SampleKafkaProducer {
           }
         }
     );
+    // 4. Shutdown cleanly
     producer.close();
   }
 }

@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * Sets up multiple Kafka consumers. Each consumer runs into its own loop.
  *
  * The purpose of this example is to show that if the topic has
- * multiple partitions only certain partitions are assigned to consumers in a given consumer group.
+ * multiple partitions only certain partitions are assigned to consumers within a given consumer group.
  */
 public class MultipleKafkaConsumers {
 
@@ -34,6 +34,13 @@ public class MultipleKafkaConsumers {
     t3.start();
   }
 
+  /**
+   * Returns the common configuration properties for our local clients.
+   *
+   * @param clientID the client ID
+   *
+   * @return
+   */
   private static Properties getCommonProperties(String clientID) {
 
     Properties config = new Properties();
@@ -52,6 +59,9 @@ public class MultipleKafkaConsumers {
 
 }
 
+/**
+ * A class that represents a single consumer thread.
+ */
 class ConsumerLoop implements Runnable {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ConsumerLoop.class);
@@ -66,11 +76,10 @@ class ConsumerLoop implements Runnable {
 
   @Override
   public void run() {
-    // create the consumer
+    // 1. Create the consumer
     KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
-    // subscribe
+    // 2. Subscribe to a topic
     consumer.subscribe(Collections.singleton(TOPIC_TEMPERATURE));
-
 
     // WARNING: It is very important to notice that this example has no clean shut down!
     while(true) {

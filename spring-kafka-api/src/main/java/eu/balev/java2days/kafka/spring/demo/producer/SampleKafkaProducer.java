@@ -5,15 +5,17 @@ import eu.balev.java2days.kafka.spring.demo.common.TemperatureSensor;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.logging.log4j.spi.LoggerRegistry;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import sun.util.locale.provider.LocaleServiceProviderPool.LocalizedObjectGetter;
 
+/**
+ * Demonstrates the usage of a Kafka Template - the Spring way to produce messages.
+ */
 @Component
 public class SampleKafkaProducer implements CommandLineRunner {
 
@@ -24,26 +26,27 @@ public class SampleKafkaProducer implements CommandLineRunner {
 
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     Stream<Double> temperatureRecords = Stream.generate(new TemperatureSensor()).limit(10);
 
     temperatureRecords.forEach((Double d) -> {
 
+      // Create a producer record, no spring wrapper here.
       ProducerRecord<String, Double> record = new ProducerRecord<>(
           Constants.TOPIC_TEMPERATURE, UUID
           .randomUUID().toString(),
           d);
+
+      // Send the record
       kafkaTemplate.send(record).addCallback(
-          (t) -> {
-            ProducerRecord<String, Double> sentRecord  = t.getProducerRecord();
+          (res) -> {
+            RecordMetadata sentRecordMeta  = res.getRecordMetadata();
             LOGGER.info("TOPIC {}, PARTITION {}",
-                sentRecord.topic(),
-                sentRecord.partition());
+                sentRecordMeta.topic(),
+                sentRecordMeta.partition());
           },
-          (e) -> {
-            LOGGER.error("Could not send message to Kafka. The error is {}", e);
-          }
+          (e) -> LOGGER.error("Could not send message to Kafka. The error is {}", e)
       );
     });
   }
