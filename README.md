@@ -16,18 +16,30 @@ The project consists of:
 
 Prerequisites if you want to use the project:
 
-+ A running Kafka installation (details below)
++ A running Kafka installation (details below).
 + Knowledge of Kafka theory.
++ Reasonable IDE - IntelliJ is certainly recommended!
 
 # Kafka installation
 
+If you want to install Kafka and make more deeper experiment maybe you would like a native Kafka installation.
+If you just want a quick and dirty start and you have docker installed then the docker installation might be the way to go.
+
 ## Docker
 
-If you have a running docker installation this is the most quick and dirty way to get started.
+If you have a running docker installation this is the quickest way to get started.
 The current project contains a docker compose file which will get you started.
+Navigate to the project root and execute (the docker deamon should be running).
+
+`docker-compose -f docker/docker-compose.yml up`
+
+If everything goes OK then you should be able to successfully execute the `SampleKafkaProducer`.
+Then you will be able to consume that with `SampleKafkaConsumer`.
 
 ## Native
 
+Installing Kafka natively without some ad-hoc configurations is easy. Just follow [this](https://kafka.apache.org/quickstart) 
+quick start guide.
 
 # Common Kafka commands
 
