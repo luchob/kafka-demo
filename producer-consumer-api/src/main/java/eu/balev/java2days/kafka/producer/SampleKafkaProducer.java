@@ -28,14 +28,14 @@ public class SampleKafkaProducer {
   public static void main(String[] args) {
 
     // 1. Setting up Kafka properties
-    Properties properties = new Properties();
+    Properties config = new Properties();
 
-    properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
-    properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-    properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DoubleSerializer.class.getName());
+    config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BROKER_LIST);
+    config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DoubleSerializer.class.getName());
 
     // 2. Create producer
-    KafkaProducer<String, Double> producer = new KafkaProducer<>(properties);
+    KafkaProducer<String, Double> producer = new KafkaProducer<>(config);
 
     // a fake temperature sensors :-)
     Stream<Double> temperatureRecords = Stream.generate(new TemperatureSensor()).limit(10);
