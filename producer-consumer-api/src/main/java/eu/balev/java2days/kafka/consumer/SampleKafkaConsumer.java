@@ -46,7 +46,7 @@ public class SampleKafkaConsumer {
       // 4. Poll the records and write them down.
       ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
       for (ConsumerRecord<String, String> record : records) {
-        LOGGER.info("Record P/O {}/{} - Key {}/Value {}",
+        LOGGER.info("PARTITION {} OFFSET {}. -> Key {}/Value {}",
             record.partition(),
             record.offset(),
             record.key(),

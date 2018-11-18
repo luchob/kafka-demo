@@ -49,9 +49,10 @@ public class SampleKafkaProducer {
 
           try {
             RecordMetadata producedRecord = producer.send(record).get();
-            LOGGER.info("PARTITION {} OFFSET {}. {} degrees sent.", d,
+            LOGGER.info("PARTITION {} OFFSET {}. {} degrees sent.",
                 producedRecord.partition(),
-                producedRecord.offset());
+                producedRecord.offset(),
+                d);
           } catch (InterruptedException e) {
             Thread.interrupted();
             LOGGER.error("I won't cooperate!");
