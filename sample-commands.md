@@ -53,3 +53,12 @@ kafka-consumer-groups.sh \
       --describe \
       --group multiple-kafka-consumer
 ```
+
+Describe the temperature topic
+
+```
+kafka-topics.sh \
+    --describe \
+    --zookeeper localhost:2181 \
+    --topic temperature
+```
